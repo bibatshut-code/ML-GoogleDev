@@ -183,6 +183,7 @@ class Adaline():
             np.random.seed(r_seed)
 
         self.wts = np.random.normal(loc = 0.0, scale = 0.01, size = features.shape[1])
+        # print(self.wts.shape)
         self.b = 0.0
 
         self.loss_history = []
@@ -192,9 +193,12 @@ class Adaline():
             inputs = self.net_input(features)
             net_act = self.activation(inputs)
 
-            errors = self.loss(y, net_act)
-            self.loss_history.append(errors)
+            loss = self.loss(y, net_act)
+            self.loss_history.append(loss)
+
             y_pred = self.predict(features)
+            errors = y - net_act 
+
             acc = self.accuracy(y, y_pred)
             self.accuracy_history.append(acc)
 
@@ -202,7 +206,7 @@ class Adaline():
             self.wts = self.wts - lr*grad_wts
             self.b = self.b - lr*grad_bias
 
-        return self.loss_history, self.accuracy_history
+        return self.wts, self.b, self.loss_history, self.accuracy_history
 
 
 
